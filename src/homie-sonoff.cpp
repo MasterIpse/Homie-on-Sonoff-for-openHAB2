@@ -18,7 +18,7 @@ bool switchOnHandler(HomieRange range, String value) {
 
   bool on = (value == "true");
   digitalWrite(PIN_RELAY, on ? HIGH : LOW);
-  switchNode.setProperty("on").send(value);
+  switchNode.setProperty("value").send(value);
   Homie.getLogger() << "Switch is " << (on ? "on" : "off") << endl;
 
   return true;
@@ -27,7 +27,7 @@ bool switchOnHandler(HomieRange range, String value) {
 void toggleRelay() {
   bool on = digitalRead(PIN_RELAY) == HIGH;
   digitalWrite(PIN_RELAY, on ? LOW : HIGH);
-  switchNode.setProperty("on").send(on ? "false" : "true");
+  switchNode.setProperty("value").send(on ? "false" : "true");
   Homie.getLogger() << "Switch is " << (on ? "off" : "on") << endl;
 }
 
@@ -60,13 +60,7 @@ void setup() {
   Homie_setFirmware("itead-sonoff-buton", "1.0.0");
   Homie.setLedPin(PIN_LED, LOW).setResetTrigger(PIN_BUTTON, LOW, 5000);
 
-  switchNode.advertise("on").settable(switchOnHandler);
-  //switchNode.setProperty("$properties").send("on:settable,on,itemtype");
-  //switchNode.setProperty("on").send("false");
-  switchNode.setProperty("itemtype").send("switch");
-  //Homie.setNodeProperty(relayNode, "$properties", "value:settable,itemtype", true);
-  //Homie.setNodeProperty(relayNode, "value", "OFF", true);
-  //Homie.setNodeProperty(relayNode, "itemtype", "Switch", true);
+  switchNode.advertise("value").settable(switchOnHandler);
 
   Homie.setLoopFunction(loopHandler);
   Homie.setup();
