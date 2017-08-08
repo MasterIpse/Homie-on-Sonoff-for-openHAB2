@@ -13,6 +13,10 @@ byte buttonPressHandled = 0;
 //type has to be an ESH type, like ESH:Switch or ESH:PowerOutlet
 HomieNode switchNode("switch", "ESH:PowerOutlet");
 
+void setupHandler(){
+  switchNode.setProperty("itemtype").send("Switch");
+}
+
 bool switchOnHandler(HomieRange range, String value) {
   if (value != "true" && value != "false") return false;
 
